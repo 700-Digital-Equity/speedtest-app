@@ -1,0 +1,26 @@
+{
+  "name": "speedtest-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron .",
+    "build": "electron-packager . speed-test-app --platform=win32 --arch=x64 --out=dist --overwrite"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/700-Digital-Equity/speedtest-app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/700-Digital-Equity/speedtest-app/issues"
+  },
+  "homepage": "https://github.com/700-Digital-Equity/speedtest-app#readme",
+  "devDependencies": {
+    "electron": "^37.1.0",
+    "electron-packager": "^17.1.2"
+  }
+}
