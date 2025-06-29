@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron .",
-    "build": "electron-packager . speed-test-app --platform=win32 --arch=x64 --out=dist --overwrite"
+    "build": "electron-packager . speed-test-app --platform=win32 --arch=x64 --out=dist --overwrite --extra-resource=python_embed"
   },
   "repository": {
     "type": "git",

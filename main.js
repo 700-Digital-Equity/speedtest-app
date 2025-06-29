@@ -19,7 +19,10 @@ app.whenReady().then(createWindow);
 // IPC handler for running Python script
 ipcMain.handle('run-speed-test', async () => {
   return new Promise((resolve, reject) => {
-    const python = spawn('python', [path.join(__dirname, 'speed_test.py')]);
+    const scriptPath = path.join(__dirname, 'speed_test.py');
+    const pythonPath = path.join(__dirname, 'python_embed', 'python.exe');
+
+    const python = spawn(pythonPath, [scriptPath]);
 
     let output = '';
     python.stdout.on('data', (data) => output += data.toString());
