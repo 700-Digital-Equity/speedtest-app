@@ -1,11 +1,25 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
-app.disableHardwareAcceleration();
-
 const { spawn } = require('child_process');
+const { MongoClient } = require('mongodb');
 const isDev = process.env.NODE_ENV === 'development' || process.env.ELECTRON_START_URL;
 
+const mongoUri = 'mongodb+srv://rebeccafitzpatrick:hfJ%7Cm%23gv5W55@cluster0.pvplf8n.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
+const dbName = '700_web_tool_db';
+const leaderboard_collection = 'leaderboard';
+const users_collection = 'users';
+const client = new MongoClient(mongoUri);
 
+async function insertResultToMongo(result) {
+  try {
+    await client.connect();
+    const db = client.db(dbName);
+    const collection = db.collection(leaderboard_collection);
+    await collection.insertOne(result);
+  } catch (err) {
+    console.error('MongoDB insert error:', err);
+  }
+}
 function createWindow() {
   
   const win = new BrowserWindow({
@@ -51,9 +65,19 @@ ipcMain.handle('run-speed-test', async () => {
     let output = '';
     python.stdout.on('data', (data) => output += data.toString());
     python.stderr.on('data', (data) => console.error(data.toString()));
-    python.on('close', (code) => {
-      if (code === 0) resolve(output);
-      else reject('Speed test failed');
+    python.on('close', async (code) => {
+      if (code === 0){
+        try {
+          const result = JSON.parse(output);
+          await insertResultToMongo(result); // <-- Store in MongoDB
+          resolve(output);
+        } catch (err) {
+          console.error('Failed to parse or store result:', err);
+          reject('Failed to parse or store result');
+        }
+      } else {
+        reject('Speed test failed');
+      }
     });
   });
 });
