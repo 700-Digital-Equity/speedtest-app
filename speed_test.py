@@ -28,7 +28,7 @@ try:
         "download": round(download / 1_000_000, 2),
         "upload": round(upload / 1_000_000, 2),
         "packet_loss": round(packet_loss, 2),
-        "ping": round(ping_time, 2) if ping_time is not None else None
+        "avg_ping": round(ping_time, 2) if ping_time is not None else None
     }
 
     print(json.dumps(result))
